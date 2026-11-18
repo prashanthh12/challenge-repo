@@ -1,0 +1,163 @@
+# Day 008 – Palindrome Number
+
+## Problem Information
+
+- **Platform:** LeetCode
+- **Problem:** 9. Palindrome Number
+- **Difficulty:** Easy
+- **Pattern:** Reverse Half of Number
+- **Topics:** Mathematics, Digit Manipulation, Modulo, Integer Division
+- **Languages:** Java and Python
+
+**Problem Link:** https://leetcode.com/problems/palindrome-number/
+
+## 1. Problem Statement
+
+Given an integer `x`, return `true` if `x` is a palindrome and `false` otherwise.
+
+A palindrome number reads the same forward and backward.
+
+### Examples
+
+**Example 1**
+
+Input: `x = 121`  
+Output: `true`
+
+**Example 2**
+
+Input: `x = -121`  
+Output: `false`
+
+**Example 3**
+
+Input: `x = 10`  
+Output: `false`
+
+## 2. Approach – Reverse Half of Number
+
+Instead of reversing the entire number, reverse only the second half and compare it with the remaining first half.
+
+### Algorithm
+
+1. If `x` is negative, return `false`.
+2. If `x` ends with zero but is not zero, return `false`.
+3. Initialize `rev = 0`.
+4. Repeat while `x > rev`:
+   - Extract the last digit using `x % 10`.
+   - Append the digit to `rev`.
+   - Remove the last digit from `x` using integer division.
+5. Compare both halves:
+   - For even-length numbers: `x == rev`.
+   - For odd-length numbers: `x == rev / 10`.
+6. Return the result.
+
+## 3. Java Solution
+
+File: `PalindromeNumber.java`
+
+```java
+class Solution {
+    public boolean isPalindrome(int x) {
+        if (x < 0 || (x % 10 == 0 && x != 0)) {
+            return false;
+        }
+
+        int rev = 0;
+
+        while (x > rev) {
+            int digit = x % 10;
+            rev = rev * 10 + digit;
+            x = x / 10;
+        }
+
+        return x == rev || x == rev / 10;
+    }
+}
+```
+
+## 4. Python Solution
+
+File: `palindrome_number.py`
+
+```python
+class Solution:
+    def isPalindrome(self, x: int) -> bool:
+        if x < 0 or (x % 10 == 0 and x != 0):
+            return False
+
+        rev = 0
+
+        while x > rev:
+            digit = x % 10
+            rev = rev * 10 + digit
+            x = x // 10
+
+        return x == rev or x == rev // 10
+```
+
+## 5. Dry Run
+
+Input: `x = 121`
+
+| Step | x | digit | rev |
+|---|---|---|---|
+| Initial | 121 | - | 0 |
+| 1 | 12 | 1 | 1 |
+| 2 | 1 | 2 | 12 |
+
+After the loop:
+
+- `x = 1`
+- `rev = 12`
+- `rev / 10 = 1`
+
+Since `x == rev / 10`, return `true`.
+
+## 6. Complexity Analysis
+
+**Time Complexity: O(log₁₀ n)**
+
+The algorithm processes approximately half of the digits of the input number.
+
+**Space Complexity: O(1)**
+
+Only a fixed number of integer variables are used.
+
+## 7. Key Learning Points
+
+- Extract the last digit using `% 10`.
+- Remove the last digit using integer division by `10`.
+- Reverse a number using `rev = rev * 10 + digit`.
+- Handle negative numbers and trailing zeros.
+- Reverse only half the number to avoid integer overflow.
+- Understand odd-length and even-length palindrome comparisons.
+
+## 8. Pattern Recognition
+
+Use this pattern when:
+
+- Checking palindrome integers without string conversion.
+- Comparing digits from opposite ends of a number.
+- Solving digit-based mathematical problems.
+- Avoiding overflow while reversing integers.
+
+## 9. Edge Cases
+
+| Input | Output |
+|---|---|
+| 0 | true |
+| 1 | true |
+| 11 | true |
+| 121 | true |
+| 1221 | true |
+| -121 | false |
+| 10 | false |
+| 123 | false |
+
+## 10. What I Learned
+
+- How to extract and reverse digits mathematically.
+- How to optimize a full-reversal approach.
+- How to handle odd and even digit counts.
+- How to solve a palindrome problem in constant space.
