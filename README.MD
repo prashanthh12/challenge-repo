@@ -15,8 +15,9 @@ solving DSA problems, and learning full-stack development.
 
 | Day | DSA | Engineering / Project | Status |
 |-----|-----|-----------------------|--------|
-| 012 | Java + Python practice | Git & GitHub | In Progress |
-| 013 | TBD | TBD | Not Started |
+| 011 |Revised JAva | API Fetcher   | In Progress |
+| 012 | Java + Python practice | Git & GitHub | Completed |
+| 013 | Learning OOPS,API | Job-description parser CLI | Not Started |
 
 ## Daily Routine
 1. Solve problems in Java and Python.
