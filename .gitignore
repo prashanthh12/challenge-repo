@@ -1,0 +1,19 @@
+# Python
+__pycache__/
+*.pyc
+.venv/
+
+# Java
+*.class
+
+# Node.js
+node_modules/
+
+# Environment variables and secrets
+.env
+.env.*
+
+# Editor and OS
+.vscode/
+.DS_Store
+Thumbs.db
