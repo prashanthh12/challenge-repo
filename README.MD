@@ -18,6 +18,7 @@ solving DSA problems, and learning full-stack development.
 | 011 |Revised JAva | API Fetcher   | In Progress |
 | 012 | Java + Python practice | Git & GitHub | Completed |
 | 013 | Learning OOPS,API | Job-description parser CLI | Not Started |
+| 014 |Best Time to Buy stocks,Move Zero in Java | API Fetcher Job-description parser CLI   | In Progress |
 
 ## Daily Routine
 1. Solve problems in Java and Python.
