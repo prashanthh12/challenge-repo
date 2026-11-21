@@ -1,0 +1,487 @@
+# REST API Fundamentals — Python
+
+## 1. What is an API?
+
+**API** stands for **Application Programming Interface**.
+
+An API allows two software applications to communicate and exchange data.
+
+### Example
+
+When a weather application displays the current temperature:
+
+1. The application sends a request to a weather API.
+2. The server receives and processes the request.
+3. The server sends a response containing weather information.
+4. The application displays the information.
+
+**Basic flow:**
+
+```text
+Client → HTTP Request → Server
+Client ← HTTP Response ← Server
+```
+
+- **Client:** Application that sends a request.
+- **Server:** System that processes requests and sends responses.
+- **Request:** Message sent by the client.
+- **Response:** Message returned by the server.
+
+---
+
+## 2. What is REST?
+
+REST stands for **Representational State Transfer**.
+
+REST is an architectural style used to design network-based applications and APIs.
+
+A REST API usually uses:
+
+- HTTP methods to perform operations.
+- URLs to identify resources.
+- JSON to exchange structured data.
+- HTTP status codes to indicate request results.
+- Stateless requests, meaning each request contains the information needed to process it.
+
+**Example endpoint:**
+
+```text
+https://jsonplaceholder.typicode.com/users/1
+```
+
+Here:
+
+- `https://` — Protocol
+- `jsonplaceholder.typicode.com` — Domain
+- `/users` — Resource collection
+- `/1` — Specific user ID
+
+An **endpoint** is a URL used to access an API resource.
+
+---
+
+## 3. HTTP Methods
+
+HTTP stands for **Hypertext Transfer Protocol**.
+
+HTTP methods indicate the operation that the client wants to perform.
+
+| Method | Purpose | Example |
+|---|---|---|
+| GET | Retrieve data | Get all users |
+| POST | Create data | Add a new user |
+| PUT | Replace data | Replace user details |
+| PATCH | Partially update data | Change only a username |
+| DELETE | Remove data | Delete a user |
+
+### GET
+
+Used to retrieve information from a server.
+
+```http
+GET /users/1
+```
+
+### POST
+
+Usually used to create a new resource.
+
+```http
+POST /users
+```
+
+### PUT
+
+Used to replace an existing resource with the supplied representation.
+
+```http
+PUT /users/1
+```
+
+### PATCH
+
+Used to modify selected fields of a resource.
+
+```http
+PATCH /users/1
+```
+
+### DELETE
+
+Used to delete a resource.
+
+```http
+DELETE /users/1
+```
+
+**Remember:**
+
+- GET → Read
+- POST → Create
+- PUT → Replace
+- PATCH → Partially update
+- DELETE → Delete
+
+These are common REST API conventions. Actual server behavior depends on the API implementation.
+
+---
+
+## 4. HTTP Request and Response
+
+An HTTP request is sent by a client to a server.
+
+### Request components
+
+1. **Method:** GET, POST, PUT, PATCH, DELETE.
+2. **URL:** Identifies the requested resource.
+3. **Headers:** Additional request information.
+4. **Body:** Data sent to the server, commonly used with POST, PUT, and PATCH.
+
+### Response components
+
+1. **Status code:** Indicates the result of the request.
+2. **Headers:** Provide response metadata.
+3. **Body:** Contains returned information, if any.
+
+**Example:**
+
+```text
+Request:
+GET /users/1
+
+Response:
+Status: 200 OK
+
+Body:
+{
+  "id": 1,
+  "name": "Leanne Graham"
+}
+```
+
+---
+
+## 5. Important HTTP Status Codes
+
+| Code | Meaning |
+|---|---|
+| 200 | OK — Request succeeded |
+| 201 | Created — Resource created |
+| 204 | No Content — Successful request without a response body |
+| 400 | Bad Request — Invalid request |
+| 401 | Unauthorized — Authentication required or invalid |
+| 403 | Forbidden — Access denied |
+| 404 | Not Found — Resource not found |
+| 500 | Internal Server Error — Server-side failure |
+
+### Status code categories
+
+- `2xx` — Success
+- `3xx` — Redirection
+- `4xx` — Client errors
+- `5xx` — Server errors
+
+---
+
+## 6. What is JSON?
+
+JSON stands for **JavaScript Object Notation**.
+
+It is a lightweight format commonly used to exchange structured data between applications.
+
+### Example
+
+```json
+{
+  "id": 1,
+  "name": "Leanne Graham",
+  "email": "leanne@example.com"
+}
+```
+
+JSON supports:
+
+- Strings
+- Numbers
+- Booleans
+- Arrays
+- Objects
+- Null values
+
+JSON is language-independent and can be used with Python, JavaScript, Java, and many other languages.
+
+---
+
+## 7. Making Your First API Request in Python
+
+Python provides the `requests` library for sending HTTP requests.
+
+### Install requests
+
+```bash
+pip install requests
+```
+
+### Python code
+
+```python
+import requests
+
+url = "https://jsonplaceholder.typicode.com/users/1"
+
+response = requests.get(url, timeout=10)
+
+print(response.status_code)
+print(response.json())
+```
+
+### Code explanation
+
+**Step 1: Import the library**
+
+```python
+import requests
+```
+
+Imports the `requests` library into the program.
+
+**Step 2: Define the API endpoint**
+
+```python
+url = "https://jsonplaceholder.typicode.com/users/1"
+```
+
+Stores the API endpoint in a variable.
+
+Here, `/users/1` requests information about user ID 1.
+
+**Step 3: Send an HTTP GET request**
+
+```python
+response = requests.get(url, timeout=10)
+```
+
+- `requests.get()` sends a GET request.
+- `url` specifies the endpoint.
+- `timeout=10` limits how long the request can wait.
+- `response` stores the response received from the server.
+
+**Step 4: Print the status code**
+
+```python
+print(response.status_code)
+```
+
+Displays the HTTP response status code.
+
+Expected successful result:
+
+```text
+200
+```
+
+**Step 5: Read the JSON response**
+
+```python
+print(response.json())
+```
+
+Parses the JSON response into Python objects.
+
+- JSON object → Python dictionary
+- JSON array → Python list
+
+### Example response
+
+```python
+{
+    'id': 1,
+    'name': 'Leanne Graham',
+    'username': 'Bret',
+    'email': 'Sincere@april.biz'
+}
+```
+
+The actual API response contains additional user details.
+
+---
+
+## 8. Handling API Errors
+
+Network requests can fail because of connection issues, timeouts, or HTTP errors.
+
+A more reliable approach uses exception handling.
+
+```python
+import requests
+
+url = "https://jsonplaceholder.typicode.com/users/1"
+
+try:
+    response = requests.get(url, timeout=10)
+
+    response.raise_for_status()
+
+    user = response.json()
+
+    print("User:", user["name"])
+
+except requests.exceptions.RequestException as error:
+    print("API Request Failed:", error)
+```
+
+### Explanation
+
+- `try` — Executes code that might fail.
+- `raise_for_status()` — Raises an exception for unsuccessful 4xx or 5xx HTTP responses.
+- `except` — Handles request-related exceptions.
+- `RequestException` — Base exception class for request-related errors.
+
+---
+
+## 9. Important Concepts to Remember
+
+| Concept | Meaning |
+|---|---|
+| API | Interface allowing applications to communicate |
+| REST | Architectural style for network APIs |
+| HTTP | Protocol for exchanging requests and responses |
+| Endpoint | URL for accessing an API resource |
+| GET | Retrieve information |
+| POST | Create a resource |
+| PUT | Replace a resource |
+| PATCH | Partially update a resource |
+| DELETE | Delete a resource |
+| JSON | Structured data exchange format |
+| Status Code | Indicates the outcome of an HTTP request |
+| `requests` | Python library for HTTP requests |
+| `response.status_code` | Access HTTP status code |
+| `response.json()` | Parse a JSON response |
+| `timeout` | Limit request waiting time |
+
+---
+
+## 10. Practice Exercises
+
+### Exercise 1: Get all users
+
+API:
+
+```text
+https://jsonplaceholder.typicode.com/users
+```
+
+Tasks:
+
+- Send a GET request.
+- Print the status code.
+- Print all users.
+- Count the number of returned users.
+
+### Exercise 2: Get a specific post
+
+API:
+
+```text
+https://jsonplaceholder.typicode.com/posts/1
+```
+
+Tasks:
+
+- Fetch the post using GET.
+- Print the title.
+- Print the body.
+- Print the HTTP status code.
+
+### Exercise 3: Handle a missing resource
+
+API:
+
+```text
+https://jsonplaceholder.typicode.com/posts/999999
+```
+
+Tasks:
+
+- Send a GET request.
+- Check the status code.
+- Handle unsuccessful responses using `raise_for_status()`.
+
+### Exercise 4: Explore JSON
+
+Fetch the users endpoint and print only:
+
+- Name
+- Email
+- City
+
+Use dictionary keys to access the required information.
+
+---
+
+## 11. Quick Revision Questions
+
+1. What does API stand for?
+2. What does REST stand for?
+3. What is the difference between GET and POST?
+4. What is the difference between PUT and PATCH?
+5. What does HTTP status code 200 mean?
+6. What is JSON?
+7. What is an API endpoint?
+8. What does `requests.get()` do?
+9. Why do we use `timeout=10`?
+10. What is the purpose of `response.json()`?
+
+---
+
+## 12. Complexity and Key Takeaways
+
+For API operations, execution time depends mainly on:
+
+- Network latency
+- Server processing time
+- Response size
+- JSON parsing time
+
+A simple GET request involves network I/O rather than just local computation.
+
+**Key takeaways:**
+
+- APIs enable communication between applications.
+- REST provides architectural principles for designing APIs.
+- HTTP methods describe operations on resources.
+- JSON is commonly used for transferring data.
+- HTTP status codes describe request outcomes.
+- Python's `requests` library makes HTTP requests easy.
+- Error handling and timeouts improve reliability.
+
+---
+
+## Learning Progress
+
+- [x] Understand what an API is
+- [x] Understand REST fundamentals
+- [x] Learn GET, POST, PUT, PATCH, DELETE
+- [x] Understand JSON
+- [x] Learn HTTP status codes
+- [x] Send a GET request using Python
+- [x] Read the status code
+- [x] Parse a JSON response
+- [ ] Complete practice exercises
+- [ ] Practice POST requests
+- [ ] Practice PUT and PATCH requests
+- [ ] Practice DELETE requests
+- [ ] Learn headers and query parameters
+- [ ] Build a CRUD REST API
+
+---
+
+**Topic:** REST API Fundamentals
+
+**Language:** Python
+
+**Library:** Requests
+
+**Level:** Beginner
+
+**Next Topic:** HTTP Requests and Responses — Headers, Parameters, Request Bodies, and POST Requests
