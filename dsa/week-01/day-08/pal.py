@@ -1,0 +1,14 @@
+class Sol: 
+    def isPal(self,x:int)->bool:
+        rev=0
+        if x<0 or(x%10==0 and x!=0):
+            return False
+        while x>rev:
+            digit=x%10
+            rev=rev*10+digit
+            x=x//10
+        return x==rev or x==rev//10
+sl=Sol()
+no=3435
+print("Is number palindrome:",sl.isPal(no))
+    
